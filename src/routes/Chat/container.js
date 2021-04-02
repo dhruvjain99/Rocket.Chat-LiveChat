@@ -10,6 +10,7 @@ import constants from '../../lib/constants';
 import { loadConfig } from '../../lib/main';
 import { parentCall, runCallbackEventEmitter } from '../../lib/parentCall';
 import { initRoom, closeChat, loadMessages, loadMoreMessages, defaultRoomParams, getGreetingMessages } from '../../lib/room';
+import {WebRTC} from '../../lib/webrtc';
 import { Consumer } from '../../store';
 import Chat from './component';
 
@@ -331,6 +332,23 @@ export class ChatContainer extends Component {
 	componentWillUnmount() {
 		this.handleConnectingAgentAlert(false);
 	}
+	
+	makeCall = async () => {
+		await this.grantUser();
+		const { _id: rid } = await this.getRoom();
+		
+		const { user } = this.props;
+
+		const webrtc = new WebRTC(user._id, rid);
+		await Livechat.subscribeNotifyVisitor(user._id);
+		Livechat.onAgentWebrtcNotification((type, data) => {
+			if (data.room == null) {
+				return;
+			}
+			webrtc.onUserStream(type, data);
+		});
+		webrtc.startCall({ audio: true, video: true });
+	}
 
 	render = ({ user, ...props }) => (
 		<Chat
@@ -348,6 +366,7 @@ export class ChatContainer extends Component {
 			onSoundStop={this.handleSoundStop}
 			registrationRequired={this.registrationRequired()}
 			onRegisterUser={this.onRegisterUser}
+			makeCall={this.makeCall}			
 		/>
 	)
 }

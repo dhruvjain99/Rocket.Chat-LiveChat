@@ -52,6 +52,7 @@ class ScreenHeader extends Component {
 		onMinimize,
 		onRestore,
 		onOpenWindow,
+		makeCall
 	}) => (
 		<Header
 			ref={this.handleRef}
@@ -85,6 +86,11 @@ class ScreenHeader extends Component {
 			</Header.Content>
 			<Tooltip.Container>
 				<Header.Actions>
+					<Tooltip.Trigger content={I18n.t("Video Call")}>
+						<Header.Action aria-label={I18n.t("Video Call")} onClick={makeCall}>
+							<img src="./../../icons/videoCall.png" width={20} height={20} />
+						</Header.Action>
+					</Tooltip.Trigger>
 					<Tooltip.Trigger content={notificationsEnabled ? I18n.t('Sound is on') : I18n.t('Sound is off')}>
 						<Header.Action
 							aria-label={notificationsEnabled ? I18n.t('Disable notifications') : I18n.t('Enable notifications')}
@@ -221,6 +227,7 @@ export const Screen = ({
 	queueInfo,
 	dismissNotification,
 	triggered = false,
+	makeCall
 }) => (
 	<div className={createClassName(styles, 'screen', { minimized, expanded, windowed, triggered })}>
 		<CssVar theme={theme} />
@@ -242,6 +249,7 @@ export const Screen = ({
 					onRestore={onRestore}
 					onOpenWindow={onOpenWindow}
 					queueInfo={queueInfo}
+					makeCall={makeCall}
 				/>}
 
 				{modal}

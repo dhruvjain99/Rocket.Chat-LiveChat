@@ -228,15 +228,28 @@ export class App extends Component {
 		};
 
 		return (
-			<Router history={history} onChange={this.handleRoute}>
-				<Chat default path='/' {...screenProps} />
-				<ChatFinished path='/chat-finished' {...screenProps} />
-				<GDPRAgreement path='/gdpr' {...screenProps} />
-				<LeaveMessage path='/leave-message' {...screenProps} />
-				<Register path='/register' {...screenProps} />
-				<SwitchDepartment path='/switch-department' {...screenProps} />
-				<TriggerMessage path='/trigger-messages' {...screenProps} />
-			</Router>
+			<div style="height: 100%; display:flex; flex-direction: column; align-items: center;">
+				<div style="display: flex; justify-content: space-around; width: 45%;">
+					<div style="height: 200px; width: 265px; position: relative;">
+						<video id="localVideo" autoplay playsinline muted style="width: 100%; height: 100%;"></video>
+						<div id="localVideoLabel" style="position: absolute; bottom: 0px; padding-top: 5px; width: 100%; color: #fffbfb; text-align: center; padding-bottom: 5px; font-weight: bold;">You</div>
+					</div>
+					<div style="height: 200px; width: 265px; position: relative;">
+						<video id="remoteVideo" autoplay playsinline muted style="width: 100%; height: 100%;"></video>
+						<div id="remoteVideoLabel" style="position: absolute; bottom: 0px; padding-top: 5px; width: 100%; color: #fffbfb; text-align: center; padding-bottom: 5px; font-weight: bold;">James</div>
+					</div>
+				</div>
+
+				<Router history={history} onChange={this.handleRoute}>
+					<Chat default path="/" {...screenProps} />
+					<ChatFinished path="/chat-finished" {...screenProps} />
+					<GDPRAgreement path="/gdpr" {...screenProps} />
+					<LeaveMessage path="/leave-message" {...screenProps} />
+					<Register path="/register" {...screenProps} />
+					<SwitchDepartment path="/switch-department" {...screenProps} />
+					<TriggerMessage path="/trigger-messages" {...screenProps} />
+				</Router>
+			</div>
 		);
 	}
 }
